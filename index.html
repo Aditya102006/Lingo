@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<meta name="description" content="LingoAI — a mobile-friendly translator with voice input, speech playback, copy, and recent translations.">
+<title>LingoAI — Smart Translator</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#131a2d;--panel2:#19233b;--line:#2b3856;--text:#f4f7ff;--muted:#a8b4d0;--mint:#72f0d1;--violet:#b3a2ff;--danger:#ff9ba8;--good:#7de7b1}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 8% 0%,#32275c 0,transparent 36%),radial-gradient(ellipse at 100% 30%,#0e4a50 0,transparent 28%),var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text)}
+button,select,textarea{font:inherit}button{touch-action:manipulation}
+.wrap{width:min(1080px,94%);margin:auto;padding:20px 0 34px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:34px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:850;font-size:1.22rem;letter-spacing:-.5px}
+.logo{display:grid;place-items:center;width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,var(--violet),var(--mint));color:#10172a;font-size:23px;box-shadow:0 8px 28px #8f82ff38}
+.tag{border:1px solid #ffffff1b;background:#ffffff09;border-radius:99px;padding:8px 12px;color:var(--muted);font-size:.78rem}
+.hero{text-align:center;max-width:730px;margin:0 auto 27px}
+.eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:2px;font-weight:800;color:var(--mint)}
+h1{font-size:clamp(2.35rem,8vw,4.35rem);line-height:1.03;letter-spacing:-2px;margin:12px 0}
+.gradient{background:linear-gradient(90deg,#d0c5ff,var(--mint));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);line-height:1.65;margin:0 auto;max-width:590px}
+.workspace{border:1px solid #ffffff20;border-radius:25px;background:#11182bdc;padding:16px;box-shadow:0 24px 70px #0005;backdrop-filter:blur(16px)}
+.languagebar{display:grid;grid-template-columns:minmax(0,1fr) 48px minmax(0,1fr);gap:10px;align-items:center;margin-bottom:14px}
+.langwrap{min-width:0}.langlabel{display:block;color:var(--muted);font-size:.75rem;margin:0 0 7px 3px}
+select{width:100%;min-width:0;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:13px 10px;border-radius:13px;outline:none}
+select:focus,textarea:focus{border-color:var(--violet)}
+.swap{align-self:end;width:46px;height:46px;border:1px solid var(--line);border-radius:14px;background:#ffffff09;color:var(--mint);font-size:22px;cursor:pointer}
+.panes{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.pane{min-width:0;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#0b1120}
+.panehead{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px 14px;border-bottom:1px solid #ffffff10;color:var(--muted);font-size:.78rem;font-weight:750;letter-spacing:.5px}
+.counter{font-size:.75rem;font-weight:500;letter-spacing:0}
+textarea{display:block;width:100%;min-height:195px;resize:vertical;border:0;outline:0;background:transparent;color:var(--text);padding:16px;font-size:1rem;line-height:1.65}
+textarea::placeholder{color:#7180a2}
+.output{min-height:195px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65}
+.output.empty{color:#7885a5}
+.panefoot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 12px;border-top:1px solid #ffffff10}
+.toolgroup{display:flex;gap:7px;flex-wrap:wrap}
+.mini{border:1px solid #35415e;background:#ffffff05;color:#e0e7ff;padding:8px 10px;border-radius:10px;cursor:pointer;font-size:.81rem}
+.mini:disabled{opacity:.38;cursor:not-allowed}
+button:hover:not(:disabled){filter:brightness(1.12)}button:active:not(:disabled){transform:scale(.985)}
+.actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px}
+.status{font-size:.87rem;color:var(--muted);min-height:22px;line-height:1.45}.status.error{color:var(--danger)}.status.good{color:var(--good)}
+.btn{border:0;border-radius:13px;padding:13px 20px;font-weight:850;cursor:pointer}
+.primary{background:linear-gradient(100deg,#c2b5ff,#70efd2);color:#11182b;box-shadow:0 8px 24px #8c82ff25}
+.secondary{background:#ffffff08;border:1px solid var(--line);color:var(--text)}
+.below{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:15px}
+.info{border:1px solid #ffffff16;background:#ffffff06;border-radius:18px;padding:17px;min-width:0}
+.info h2{font-size:1rem;margin:0 0 8px}.info p{font-size:.88rem;color:var(--muted);line-height:1.6;margin:0}
+.historylist{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.historyitem{width:100%;text-align:left;border:1px solid #ffffff13;background:#0c1222;border-radius:12px;padding:11px;color:var(--text);cursor:pointer;overflow-wrap:anywhere}
+.historyitem small{display:block;color:var(--muted);margin-top:5px;line-height:1.4}
+.footer{text-align:center;color:#7785a5;font-size:.77rem;line-height:1.6;margin:22px auto 0;max-width:780px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:680px){.wrap{width:94%;padding-top:15px}.tag{display:none}header{margin-bottom:27px}.hero{margin-bottom:22px}h1{letter-spacing:-1.5px}.workspace{padding:11px;border-radius:20px}.languagebar{grid-template-columns:minmax(0,1fr) 39px minmax(0,1fr);gap:6px}.langlabel{font-size:.7rem}select{font-size:.82rem;padding:12px 5px}.swap{width:38px;height:42px}.panes{grid-template-columns:1fr}.pane textarea,.output{min-height:145px}.below{grid-template-columns:1fr}.actions .primary{width:100%}.actions{align-items:stretch}.status{width:100%}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header><div class="brand"><div class="logo" aria-hidden="true">文</div><span>Lingo<span class="gradient">AI</span></span></div><span class="tag">✦ Your multilingual workspace</span></header>
+<section class="hero"><div class="eyebrow">Words connect worlds</div><h1>Say it in <span class="gradient">any language.</span></h1><p>Translate messages, dictate with your voice, listen to results, and revisit recent translations — designed to work comfortably on your phone.</p></section>
+<section class="workspace" aria-label="Translation workspace">
+<div class="languagebar">
+<label class="langwrap"><span class="langlabel">FROM</span><select id="source" aria-label="Source language">
+<option value="auto" selected>🌐 Auto-detect language</option><option value="en">🇬🇧 English</option><option value="hi">🇮🇳 Hindi</option><option value="es">🇪🇸 Spanish</option><option value="fr">🇫🇷 French</option><option value="de">🇩🇪 German</option><option value="it">🇮🇹 Italian</option><option value="pt">🇵🇹 Portuguese</option><option value="ru">🇷🇺 Russian</option><option value="ja">🇯🇵 Japanese</option><option value="ko">🇰🇷 Korean</option><option value="zh-CN">🇨🇳 Chinese (Simplified)</option><option value="ar">🇸🇦 Arabic</option><option value="bn">🇧🇩 Bengali</option><option value="ur">🇵🇰 Urdu</option>
+</select></label>
+<button class="swap" id="swap" title="Swap languages" aria-label="Swap languages">⇄</button>
+<label class="langwrap"><span class="langlabel">TO</span><select id="target" aria-label="Target language">
+<option value="en" selected>🇬🇧 English</option><option value="hi">🇮🇳 Hindi</option><option value="es">🇪🇸 Spanish</option><option value="fr">🇫🇷 French</option><option value="de">🇩🇪 German</option><option value="it">🇮🇹 Italian</option><option value="pt">🇵🇹 Portuguese</option><option value="ru">🇷🇺 Russian</option><option value="ja">🇯🇵 Japanese</option><option value="ko">🇰🇷 Korean</option><option value="zh-CN">🇨🇳 Chinese (Simplified)</option><option value="ar">🇸🇦 Arabic</option><option value="bn">🇧🇩 Bengali</option><option value="ur">🇵🇰 Urdu</option>
+</select></label>
+</div>
+<div class="panes">
+<section class="pane"><div class="panehead"><span>YOUR TEXT</span><span class="counter" id="count">0 / 5000</span></div><textarea id="input" maxlength="5000" placeholder="Type or paste text here…" aria-label="Text to translate"></textarea><div class="panefoot"><button class="mini" id="clear">✕ Clear</button><div class="toolgroup"><button class="mini" id="listenInput">🔊 Listen</button><button class="mini" id="voiceInput">🎙 Speak</button></div></div></section>
+<section class="pane"><div class="panehead"><span>TRANSLATION</span><span class="counter" id="resultLang">English</span></div><div class="output empty" id="output" aria-live="polite">Your translation will appear here.</div><div class="panefoot"><button class="mini" id="copy" disabled>▣ Copy</button><div class="toolgroup"><button class="mini" id="listenOutput" disabled>🔊 Listen</button><button class="mini" id="stopVoice">■ Stop</button></div></div></section>
+</div>
+<div class="actions"><div class="status" id="status" role="status" aria-live="polite">Ready when you are.</div><button class="btn primary" id="translate">Translate text&nbsp; →</button></div>
+</section>
+<section class="below">
+<div class="info"><h2>✦ Built for everyday communication</h2><p>Choose Auto-detect or select the original language, then choose the target language. Romanized Hindi is sent through automatic detection first. Public translation endpoints require no API key. Free public endpoints can be busy or unavailable, and results may need review for names, slang, specialist, or high-stakes text.</p></div>
+<div class="info"><h2>◷ Recent translations</h2><div class="historylist" id="history"><p style="color:var(--muted);font-size:.88rem;margin:0">Your recent translations will show here.</p></div><button class="mini" id="clearHistory" style="margin-top:10px">Clear history</button></div>
+</section>
+<footer class="footer">LINGOAI · Auto-detect + free public translation endpoints · Voice features depend on browser and device support.<br>Translation services are external. Avoid entering passwords, private documents, or other sensitive information.</footer>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const source=$('source'),target=$('target'),input=$('input'),output=$('output'),status=$('status'),translateBtn=$('translate');
+const langNames={auto:'Auto-detect',en:'English',hi:'Hindi',es:'Spanish',fr:'French',de:'German',it:'Italian',pt:'Portuguese',ru:'Russian',ja:'Japanese',ko:'Korean','zh-CN':'Chinese (Simplified)',ar:'Arabic',bn:'Bengali',ur:'Urdu'};
+let lastTranslation='',history=[],recognition=null,listening=false,requestNumber=0;
+function setStatus(message,type=''){status.textContent=message;status.className='status'+(type?' '+type:'')}
+function updateCount(){$('count').textContent=`${input.value.length} / 5000`}
+function setOutput(text,empty=false){output.textContent=text;output.classList.toggle('empty',empty);lastTranslation=empty?'':text;$('copy').disabled=empty||!text;$('listenOutput').disabled=empty||!text}
+function updateResultLanguage(){$('resultLang').textContent=langNames[target.value]||target.value}
+function renderHistory(){
+ const el=$('history');el.replaceChildren();
+ if(!history.length){const p=document.createElement('p');p.textContent='Your recent translations will show here.';p.style.cssText='color:var(--muted);font-size:.88rem;margin:0';el.appendChild(p);return}
+ history.slice(0,5).forEach(item=>{const b=document.createElement('button');b.type='button';b.className='historyitem';b.textContent=item.from+' → '+item.to;const small=document.createElement('small');small.textContent=item.original.slice(0,100)+(item.original.length>100?'…':'');b.appendChild(small);b.addEventListener('click',()=>{input.value=item.original;source.value=item.source;target.value=item.target;updateCount();updateResultLanguage();setOutput(item.translation);setStatus('Loaded from recent translations.','good')});el.appendChild(b)});
+}
+function saveHistory(item){history.unshift(item);history=history.slice(0,5);try{localStorage.setItem('lingoai_history',JSON.stringify(history))}catch(e){}renderHistory()}
+async function fetchWithTimeout(url,options={},timeout=12000){
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeout);
+ try{return await fetch(url,{...options,signal:controller.signal})}finally{clearTimeout(timer)}
+}
+function isMostlyLatin(text){return /[A-Za-z]/.test(text)&&!/[ऀ-ॿ]/.test(text)}
+function effectiveSource(text,selected){
+ // Romanized Hindi commonly contains Latin characters even though the spoken language is Hindi.
+ if(selected==='auto')return 'auto';
+ if(selected==='hi'&&isMostlyLatin(text))return 'auto';
+ return selected;
+}
+async function googleFreeTranslate(text,from,to){
+ // Google's public web translation endpoint is keyless but unofficial and may change or rate-limit.
+ const sl=from==='auto'?'auto':from;
+ const url='https://translate.googleapis.com/translate_a/single?client=gtx&sl='+encodeURIComponent(sl)+'&tl='+encodeURIComponent(to)+'&dt=t&q='+encodeURIComponent(text);
+ const response=await fetchWithTimeout(url,{},12000);
+ if(!response.ok)throw new Error('Google public endpoint returned HTTP '+response.status);
+ const data=await response.json();
+ if(!Array.isArray(data)||!Array.isArray(data[0]))throw new Error('No translation returned');
+ const result=data[0].map(part=>Array.isArray(part)?part[0]||'':'').join('').trim();
+ if(!result)throw new Error('Empty translation');
+ return {text:result,provider:'Google public translation endpoint'};
+}
+async function myMemoryTranslate(text,from,to){
+ const url='https://api.mymemory.translated.net/get?q='+encodeURIComponent(text)+'&langpair='+encodeURIComponent(from+'|'+to);
+ const response=await fetchWithTimeout(url,{},15000);
+ if(!response.ok)throw new Error('MyMemory returned HTTP '+response.status);
+ const data=await response.json();
+ if(data.responseStatus!==200||!data.responseData?.translatedText)throw new Error(data.responseDetails||'MyMemory did not return a translation.');
+ const result=data.responseData.translatedText.trim();
+ if(!result)throw new Error('Empty translation');
+ if(/MYMEMORY WARNING|PLEASE SELECT TWO DISTINCT LANGUAGES/i.test(result))throw new Error(result);
+ return {text:result,provider:'MyMemory'};
+}
+async function libreTranslate(text,from,to){
+ const url='https://translate.argosopentech.com/translate';
+ const response=await fetchWithTimeout(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:text,source:from,target:to,format:'text'})},15000);
+ if(!response.ok)throw new Error('Fallback service returned HTTP '+response.status);
+ const data=await response.json();
+ if(!data.translatedText)throw new Error('Fallback service did not return a translation.');
+ return {text:String(data.translatedText).trim(),provider:'LibreTranslate public endpoint'};
+}
+async function romanHindiToDevanagari(text){
+ // Google Input Tools public endpoint: transliterates Roman Hindi into Devanagari.
+ const url='https://inputtools.google.com/request?text='+encodeURIComponent(text)+'&itc=hi-t-i0-und&num=5&cp=0&cs=1&ie=utf-8&oe=utf-8';
+ const response=await fetchWithTimeout(url,{},9000);
+ if(!response.ok)throw new Error('Transliteration unavailable');
+ const data=await response.json();
+ if(data[0]!=='SUCCESS'||!Array.isArray(data[1]))throw new Error('No transliteration returned');
+ const first=data[1][0];
+ const candidates=first&&first[1];
+ if(!Array.isArray(candidates)||!candidates.length)throw new Error('No transliteration candidates');
+ return String(candidates[0]||'').trim();
+}
+function hasDevanagari(text){return /[ऀ-ॿ]/.test(text)}
+async function translate(){
+ const text=input.value.trim();
+ if(!text){setStatus('Please enter some text first.','error');input.focus();return}
+ const from=effectiveSource(text,source.value);
+ if(from!=='auto'&&from===target.value){setOutput(text);updateResultLanguage();setStatus('Both languages are the same, so the original text is shown.','good');return}
+ const thisRequest=++requestNumber;
+ translateBtn.disabled=true;translateBtn.textContent='Translating…';setStatus('Detecting language and translating…');setOutput('Translating…',true);
+ try{
+  let result;
+  try{result=await googleFreeTranslate(text,from,target.value)}
+  catch(googleError){
+   setStatus('First service unavailable. Trying free backup…');
+   try{result=await myMemoryTranslate(text,from==='auto'?'en':from,target.value)}
+   catch(memoryError){result=await libreTranslate(text,from==='auto'?'auto':from,target.value)}
+  }
+  // If auto-detection simply echoes Latin-script input, it may be Romanized Hindi.
+  // Transliterate it to Devanagari and translate as Hindi rather than showing a raw echo.
+  if(from==='auto'&&!hasDevanagari(text)&&result.text.toLocaleLowerCase()===text.toLocaleLowerCase()){
+   try{
+    const devanagari=await romanHindiToDevanagari(text);
+    if(devanagari&&hasDevanagari(devanagari)){
+     const hindiResult=target.value==='hi'?{text:devanagari,provider:'Roman Hindi transliteration'}:await googleFreeTranslate(devanagari,'hi',target.value);
+     // For English target, translate Hindi -> English; for Hindi target, show transliteration itself.
+     result=target.value==='hi'?hindiResult:{text:hindiResult.text,provider:'Roman Hindi → Hindi → translation'};
+    }
+   }catch(transliterationError){
+    // Keep the first result if public transliteration is unavailable.
+   }
+  }
+  if(thisRequest!==requestNumber)return;
+  setOutput(result.text);updateResultLanguage();
+  setStatus('Translation complete · '+result.provider,'good');
+  const sourceName=source.value==='auto'?'Auto-detected':(langNames[source.value]||source.value);
+  saveHistory({original:text,translation:result.text,source:source.value,target:target.value,from:sourceName,to:langNames[target.value]||target.value,provider:result.provider});
+ }catch(error){
+  if(thisRequest!==requestNumber)return;
+  setOutput('Translation is temporarily unavailable. Check your internet connection and try again.',true);
+  setStatus('Both free services failed or are busy. Try again in a moment.','error');
+ }finally{if(thisRequest===requestNumber){translateBtn.disabled=false;translateBtn.textContent='Translate text  →'}}
+}
+function speak(text,lang){
+ if(!text.trim()){setStatus('There is no text to read aloud.','error');return}
+ if(!('speechSynthesis'in window)){setStatus('Speech playback is not supported in this browser.','error');return}
+ window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang=lang;
+ utterance.onstart=()=>setStatus('Speaking…');utterance.onend=()=>setStatus('Voice playback finished.','good');utterance.onerror=()=>setStatus('Voice playback could not start on this device.','error');window.speechSynthesis.speak(utterance);
+}
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+async function startVoiceInput(){
+ if(listening&&recognition){try{recognition.stop()}catch(e){};return}
+ if(!SpeechRecognition){
+  setStatus('This browser does not support voice typing. Open the site in updated Google Chrome, or use your keyboard microphone.','error');return;
+ }
+ if(!window.isSecureContext){
+  setStatus('Microphone needs a secure page. Open this HTML through an HTTPS website (for example GitHub Pages), not a local content:// preview.','error');return;
+ }
+ // Request/check microphone permission first; release the stream before starting speech recognition.
+ if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+  let stream;
+  try{stream=await navigator.mediaDevices.getUserMedia({audio:true});}
+  catch(err){
+   const msg=err&&err.name==='NotAllowedError'?'Microphone permission blocked. In Chrome: ⋮ → Settings → Site settings → Microphone → Allow, then reload.':
+   err&&err.name==='NotFoundError'?'No microphone was found on this device.':
+   'Could not access microphone ('+(err&&err.name||'error')+'). Check Chrome site permissions and try again.';
+   setStatus(msg,'error');return;
+  }
+  stream.getTracks().forEach(track=>track.stop());
+ }
+ recognition=new SpeechRecognition();
+ recognition.lang=source.value==='auto'?'hi-IN':source.value==='zh-CN'?'zh-CN':source.value==='hi'?'hi-IN':source.value==='en'?'en-IN':source.value;
+ recognition.interimResults=true;recognition.continuous=false;
+ let finalText='';
+ recognition.onstart=()=>{listening=true;$('voiceInput').textContent='⏹ Stop mic';setStatus('Listening… speak now.');};
+ recognition.onresult=event=>{let interim='';for(let i=event.resultIndex;i<event.results.length;i++){const part=event.results[i][0].transcript;if(event.results[i].isFinal)finalText+=part;else interim+=part;}input.value=(finalText+interim).trim().slice(0,5000);updateCount();};
+ recognition.onerror=event=>{
+  const messages={
+   'not-allowed':'Microphone permission blocked. Allow microphone for this site in Chrome settings, then reload.',
+   'service-not-allowed':'Speech service blocked. Try HTTPS hosting and ensure Google voice typing/speech services are available.',
+   'network':'Speech recognition network error. Turn on internet and try again.',
+   'no-speech':'No speech detected. Tap Speak and talk after the listening indicator appears.',
+   'audio-capture':'Microphone is unavailable or being used by another app.'
+  };
+  setStatus(messages[event.error]||('Voice input error: '+event.error),'error');
+ };
+ recognition.onend=()=>{listening=false;$('voiceInput').textContent='🎙 Speak';if(input.value.trim())setStatus('Voice input ready. Review your text, then translate.','good');};
+ try{recognition.start();}catch(e){listening=false;$('voiceInput').textContent='🎙 Speak';setStatus('Could not start speech recognition. Reload the page and try again.','error');}
+}
+translateBtn.addEventListener('click',translate);
+input.addEventListener('input',updateCount);
+$('swap').addEventListener('click',()=>{
+ const oldSource=source.value,oldTarget=target.value,oldInput=input.value,oldOutput=lastTranslation;
+ source.value=oldTarget;target.value=oldSource;input.value=oldOutput||'';
+ setOutput(oldInput||'Your translation will appear here.',!oldInput);updateCount();updateResultLanguage();setStatus('Languages swapped.');
+});
+$('clear').addEventListener('click',()=>{requestNumber++;input.value='';setOutput('Your translation will appear here.',true);updateCount();setStatus('Text cleared.');input.focus();translateBtn.disabled=false;translateBtn.textContent='Translate text  →'});
+$('copy').addEventListener('click',async()=>{try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(lastTranslation);else{const area=document.createElement('textarea');area.value=lastTranslation;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();const ok=document.execCommand('copy');area.remove();if(!ok)throw new Error('copy failed')}setStatus('Translation copied to clipboard.','good')}catch(e){setStatus('Clipboard access was blocked. Select and copy the translation manually.','error')}});
+$('listenInput').addEventListener('click',()=>speak(input.value,source.value));
+$('listenOutput').addEventListener('click',()=>speak(lastTranslation,target.value));
+$('voiceInput').addEventListener('click',startVoiceInput);
+$('stopVoice').addEventListener('click',()=>{if('speechSynthesis'in window)window.speechSynthesis.cancel();if(listening&&recognition)recognition.stop();setStatus('Voice stopped.')});
+source.addEventListener('change',()=>{if(listening&&recognition)recognition.stop()});
+target.addEventListener('change',updateResultLanguage);
+$('clearHistory').addEventListener('click',()=>{history=[];try{localStorage.removeItem('lingoai_history')}catch(e){}renderHistory();setStatus('Recent translations cleared.','good')});
+try{const saved=JSON.parse(localStorage.getItem('lingoai_history')||'[]');if(Array.isArray(saved))history=saved.filter(x=>x&&typeof x.original==='string'&&typeof x.translation==='string'&&(langNames[x.source]||x.source==='auto')&&langNames[x.target]).slice(0,5)}catch(e){}
+renderHistory();updateCount();updateResultLanguage();
+</script>
+</body>
+</html>
